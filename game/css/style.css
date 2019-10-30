@@ -1,0 +1,73 @@
+*,
+*:after,
+*:before{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html,body{
+    margin: 0;
+    padding: 0;
+    overflow: hidden; 
+}
+#start,
+#end {
+	display: none;
+}
+
+.container{
+    background-image:url(../../media/bg/41992c68740141.5b681967053a0.jpg);
+    background-repeat: no-repeat;
+    background-size: 100%;
+    height:1080px;
+}
+
+.main-menu{
+    position: relative;
+    top: 20px;
+    background-color:rgba(12, 25, 12, 0.8);
+    max-width: 600px;
+    margin: 0 auto;
+    padding-top: 20px;
+}
+.main-menu form{
+   text-align: center;
+}
+.main-menu input{
+    height: 25px;
+    text-align: center;
+}
+.pic-aladdin img,.pic-jasmine img{
+    max-width: 250px;
+    min-width: 250px;
+    min-height: 400px;
+    max-height: 400px;
+}
+.pic-jasmine button,.pic-aladdin button{
+    padding: 10px 0 10px 0;
+    margin: 10px;
+    width: 200px;
+    border: none;
+}
+.pic-jasmine button:hover,.pic-aladdin button:hover{
+    cursor: pointer;
+    background-color:purple;
+}
+.pics{
+    display: flex;
+}
+.pic-aladdin,.pic-jasmine{
+    text-align: center;
+    flex:1;
+}
+h1{
+ color: white;
+ padding-bottom: 20px;
+ text-align: center;
+}
+.stats{
+    position: absolute;
+    font-size: 24px;
+    padding-top: 20px;
+    padding-left: 15px;
+}
