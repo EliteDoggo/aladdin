@@ -10,8 +10,9 @@ html,body{
     padding: 0;
     overflow: hidden; 
 }
-#start,
-#end {
+/*#start,*/
+#end,
+#game {
 	display: none;
 }
 
