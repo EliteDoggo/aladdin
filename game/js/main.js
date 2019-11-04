@@ -150,10 +150,14 @@ function update() {
         player.jumping = false;
     }
 
+  
     if (player.x >= width/2 ) {
         bgWidth+=player.speed;
         player.x = width/2-1;
     }
+        
+    
+    
 }
 let bgWidth = 0;
 let aAA= 0;
