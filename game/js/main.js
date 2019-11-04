@@ -113,8 +113,11 @@ function update() {
     if (keys['ArrowRight']) {
         if (player.velX < player.speed) {
             player.velX++;
-            if (aAA<=alRun.width-30) {
-                aAA+=3; 
+            if (aAA<=364) {
+                for (let i = 0; i < alRunPoints.length; i++) {
+                    aAA = alRunPoints[i];
+                    
+               } 
             }else aAA = 0;
            
         }
@@ -148,8 +151,11 @@ function update() {
     }
 }
 let bgWidth = 0;
-let aAA =0;
+let aAA ;
 
+let alRunPoints=[
+    3,35,68,93,127,166,203,234,262,291,325,365
+];
 
 function draw() {
     ctx.drawImage(bg, bgWidth, 0, width, bg.height,   0, 0, width, height);
