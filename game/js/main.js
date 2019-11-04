@@ -35,7 +35,7 @@ document.body.appendChild(canv);
 
 
 let player = {
-    x: (width/2) - (width/2.1),
+    x: 0,
     y: height-50,
     width: 27,
     height: 62,
@@ -114,7 +114,7 @@ function update() {
         if (player.velX < player.speed) {
             player.velX++;
             if (aAA<=alRun.width-30) {
-                aAA+=player.speed; 
+                aAA+=3; 
             }else aAA = 0;
            
         }
