@@ -113,8 +113,8 @@ function update() {
     if (keys['ArrowRight']) {
         if (player.velX < player.speed) {
             player.velX++;
-            if (aAA<=400) {
-                aAA+=2; 
+            if (aAA<=alRun.width-30) {
+                aAA+=player.speed; 
             }else aAA = 0;
            
         }
@@ -142,15 +142,17 @@ function update() {
         player.jumping = false;
     }
 
-    if (player.y >= width/2 ) {
-        
+    if (player.x >= width/2 ) {
+        bgWidth+=5;
+        player.x = width/2-5;
     }
 }
+let bgWidth = 0;
 let aAA =0;
 
 
 function draw() {
-    ctx.drawImage(bg, 0, 0, width, bg.height,   0, 0, width, height);
+    ctx.drawImage(bg, bgWidth, 0, width, bg.height,   0, 0, width, height);
       
     // ctx.drawImage(alStand, player.x,  player.y, player.width, player.height);
     // тест 
