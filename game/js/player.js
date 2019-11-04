@@ -1,12 +1,15 @@
 class Player {
-	constructor(p,x,y,a,b) {
-		this.p=p;
-		this.x=x;
-		this.y=y;
-		this.a=a;
-		this.b=b ;
-		this.x = x;
-			this.keys = {
+	constructor(p,a,b,c,d,e,f,g,h) {
+		this.p = p;
+		this.a = a;
+		this.c = c;
+		this.b = b;
+		this.d = d;
+		this.e = e;
+		this.f = f; 
+		this.g = g;
+		this.h = h;
+		this.keys = {
 				37:'false',
 				39:'false'
 			};

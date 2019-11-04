@@ -7,12 +7,11 @@ let $start = document.querySelector('#start'),
     $tableTime = document.querySelector('#tableTime'),
     $forAl = document.querySelector('#forAl'),
     $forJa = document.querySelector('#forJa'),
-    $playerName = document.querySelector('#playerName');
+    $playerName = document.querySelector('#playerName'),
+    $tablePlayer1 = document.querySelector('#tablePlayer1'),
+    $tablePlayer2 = document.querySelector('#tablePlayer2');
 
-let indexFrame = 0;
-let numberFrame = 12;
 
-let G = 1;
 let canv,
     ctx,
     name,
@@ -23,52 +22,58 @@ let canv,
     startTime,
     images = {},
     width,
-    height;
+    height,
+    keys = [],
+    friction = 0.8,
+    gravity = 0.2;
 
-// let player = new Player(images.alStand, 10, 500,100,  200);
-
-let x = 0;
-let keys = {
-    37: 'false',
-    39: 'false'
-}
+canv = document.createElement('canvas');
+ctx = canv.getContext('2d');
+width = canv.width = window.innerWidth;
+height = canv.height = window.innerHeight;
+document.body.appendChild(canv);
 
 
+let player = {
+    x: (width/2) - (width/2.1),
+    y: height-50,
+    width: 27,
+    height: 62,
+    speed: 3,
+    velX: 0,
+    velY:0,
+    jumping:false
+};
 //начало игры
 $forJa.onclick = function() {
     $start.style.display ='none';
     $game.style.display = 'block';
-    init();
-}
-
+    if (bg.onload) {
+        init();
+    }
+    
+};
 $forAl.onclick = function() {
     $start.style.display ='none';
     $game.style.display = 'block';
-    init();
-}
+    if (bg.onload) {
+        init();
+    }
+};
 
 
 
-load();
+let bg = new Image();
+let alStand = new Image();
+let alRun = new Image();
 
-async function load() {
-    
-    images.bg = await loadImage('../media/bg/bg.png');
-    images.ground = await loadImage('../media/clipart/194900.png');
-    images.alStand = await loadImage('../media/sprites/aladdin1.png')
-    // images.aladdinRun = [];
-    images.aladdinRun = await loadImage('../media/sprites/aladdinRun.png');
+bg.onload = e=> {
+    return true;
+};
 
-    // init();
-}
-
-function loadImage(path){
-    return new Promise(res => {
-        let img = new Image();
-        img.onload = res(img);
-        img.src = path;
-    });
-}
+bg.src = '../media/bg/bg.png';
+alStand.src = '../media/sprites/aladdin1.png';
+alRun.src = '../media/sprites/aladdinRun.png';
 
 
 function init() {
@@ -77,14 +82,6 @@ function init() {
     bananas = 0;
     startTime = new Date().getTime();
     $tableName.innerHTML = name;
-    
-
-    canv = document.createElement('canvas');
-    ctx = canv.getContext('2d');
-    width = canv.width = window.innerWidth;
-    height = canv.height = window.innerHeight;
-    document.body.appendChild(canv);
-
 
 
     updateTimer();
@@ -103,59 +100,65 @@ function init() {
 function loop() {
     update();
     draw();
-
     requestAnimationFrame(loop);
-
 }
 
 function update() {
-
- if (keys['37']) {
-        x-=10;
+    if (keys['ArrowUp']){
+        if (!player.jumping) {
+            player.jumping = true;
+            player.velY = -player.speed * 2;
+        }
     }
-    if (keys['39']) {
-        x+=10;
+    if (keys['ArrowRight']) {
+        if (player.velX < player.speed) {
+            player.velX++;
+            if (aAA<=400) {
+                aAA+=2; 
+            }else aAA = 0;
+           
+        }
+    }
+    if (keys['ArrowLeft']) {
+        if (player.velX > -player.speed) {
+            player.velX--;
+        }
+    }
+    
+    player.velX *= friction;
+    player.velY += gravity;
+    
+    player.x += player.velX;
+    player.y += player.velY;
+
+    if (player.x >= width-player.width) {
+        player.x = width - player.width;    
+    }else if (player.x <= 0) {
+        player.x= 0;
     }
 
+    if(player.y >= height - player.height-30){
+        player.y = height - player.height-30;
+        player.jumping = false;
+    }
 
-
-    // player.update();
-
+    if (player.y >= width/2 ) {
+        
+    }
 }
+let aAA =0;
+
 
 function draw() {
-    ctx.drawImage(images.bg, 0, 0, width, images.bg.height,
-                                0, 0, width, height);
-
-    // ctx.drawImage(images.ground,  50,  height-100,  100, 70);
-
-   
-    // ctx.drawImage(images.alStand, x,  height-(images.alStand.height *2.5), 
-    //                               images.alStand.width*2,  images.alStand.height*2);
-    ctx.drawImage(images.aladdinRun,
-                  images.aladdinRun.width / numberFrame,  
-                  height-(images.alStand.height *2.5),
-                  0,0,
-                 indexFrame * images.aladdinRun.width / numberFrame,
-                  images.alStand.height*2,
-                  images.aladdinRun.width / numberFrame,  
-                  height-(images.alStand.height *2.5));
-   
-if (x<=0) {
-    x=10;
-} 
-if (x>window.innerWidth) {
-    x=window.innerWidth-101;
-}
-
-
-    // player.draw();
+    ctx.drawImage(bg, 0, 0, width, bg.height,   0, 0, width, height);
+      
+    // ctx.drawImage(alStand, player.x,  player.y, player.width, player.height);
+    ctx.drawImage(alRun, aAA, 0,35,player.height, player.x, player.y,35,player.height );
 }
 
 function updateTimer() {
     $tableTime.innerText = Math.floor( (new Date().getTime() - startTime) / 1000);
     $tableHP.innerText = hp;
-
 }
 
 function die() {
@@ -163,29 +166,9 @@ function die() {
     $end.style.display = 'block';
 }
 
-
-document.addEventListener('keydown', e => {
-    keyPress(e.keyCode);
-
-});
-
-
-document.addEventListener('keyup', e => {
-    keyRelease(e.keyCode);
-
-});
-
-       
-
-function keyPress(keycode) {
-    if (keys[keycode]!==undefined){
-        keys[keycode]=true;    
-    }
-}
-
-
-function keyRelease(keycode){
-    if (keys[keycode]!==undefined){
-        keys[keycode]=false;
-    }
-}
+document.onkeydown = e=>{
+    keys[e.key] = true;
+};
+document.onkeyup = e=>{
+    keys[e.key] = false;
+};
