@@ -151,8 +151,8 @@ function update() {
     }
 
     if (player.x >= width/2 ) {
-        bgWidth+=5;
-        player.x = width/2-5;
+        bgWidth+=player.speed;
+        player.x = width/2-1;
     }
 }
 let bgWidth = 0;
