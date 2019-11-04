@@ -153,8 +153,11 @@ function draw() {
     ctx.drawImage(bg, 0, 0, width, bg.height,   0, 0, width, height);
       
     // ctx.drawImage(alStand, player.x,  player.y, player.width, player.height);
+    // тест 
     ctx.drawImage(alRun, aAA, 0,35,player.height, player.x, player.y,35,player.height );
+    // тест
 }
+
 
 function updateTimer() {
     $tableTime.innerText = Math.floor( (new Date().getTime() - startTime) / 1000);
