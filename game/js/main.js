@@ -44,6 +44,10 @@ let player = {
     velY:0,
     jumping:false
 };
+
+let banna = {
+
+};
 //начало игры
 $forJa.onclick = function() {
     $start.style.display ='none';
@@ -115,16 +119,13 @@ function update() {
             player.velX++;
             
         
-        if (aAA < 365) {
-            for (let i= 0; i < 12; i++){
-                aAA = alRunPoints[i];
-                
-            }
-        }else aAA = 0;
-            
-            
-           
-           
+            if (aAA < 365) {
+                for (let i= 0; i < 12; i++){
+                    aAA = alRunPoints[i];
+                    
+                }
+            }else aAA = 0;
+ 
         }
     }
     if (keys['ArrowLeft']) {
@@ -184,6 +185,7 @@ function updateTimer() {
 function die() {
     $game.style.display = 'none';
     $end.style.display = 'block';
+    $tablePlayer1.innerText = `Name: ${name} | Time: ${$tableTime.innerText}`;
 }
 
 document.onkeydown = e=>{
