@@ -34,6 +34,8 @@ height = canv.height = window.innerHeight;
 document.body.appendChild(canv);
 
 
+let shift=0;
+
 let frameCurrent = 0,
     framePerStep = 5,
     frames = 0,
@@ -70,7 +72,6 @@ $forAl.onclick = function() {
         init();
     }
 };
-
 
 
 let bg = new Image();
@@ -125,6 +126,7 @@ function update() {
             player.velX++;
             dir = 'right';
             
+            
             if (frames >= framePerStep) {
                 frames = 0;
                 frameCurrent = (frameCurrent + 1) % alRunPoints.length;
@@ -150,14 +152,8 @@ function update() {
     player.velX *= friction;
     player.velY += gravity;
     
-    player.x += player.velX;
+    // player.x += player.velX;
     player.y += player.velY;
-
-    if (player.x >= width-player.width) {
-        player.x = width - player.width;    
-    }else if (player.x <= 0) {
-        player.x= 0;
-    }
 
     if(player.y >= ground - player.height-30){
         player.y = ground - player.height-30;
@@ -165,14 +161,46 @@ function update() {
     }
 
   
-    if (player.x >= width/2 ) {
-        bgWidth+=player.speed;
-        player.x = width/2-1;
+    // if (player.x >= width/2 ) {
+    //     bgWidth+=player.speed;
+    //     player.x = width/2-1;
+    // }
+
+
+    shift =Math.min(bg.width - width,Math.max(0,shift));
+    leftPos = (shift == 0 && player.x<= width/2);
+
+    rightPos = (shift == bg.width-width && player.x>=width/2);
+
+
+
+    if (leftPos || rightPos) {
+        player.x+= player.velX * 3;
+    }else{
+        shift+=player.velX * 3;
+        player.x = width/2;
     }
-        
-    
+
+    if (player.x >= width-alRunPoints[frameCurrent].w) {
+        player.x = width - alRunPoints[frameCurrent].w;    
+    }else if (player.x <= 0) {
+        player.x= 0;
+    }
+
+    // player.x = Math.min(width - alRunPoints[frameCurrent].w,Math.max(0,player.x));
 }
+
+
+ctx.font = '20px sans-serif';
+
+let leftPos,
+    rightPos;
+
+
+
+
 let bgWidth = 0;
+
 
 let alRunPoints=[
     {x: 3, w: 35},
@@ -192,7 +220,7 @@ let alRunPoints=[
 
 
 function draw() {
-    ctx.drawImage(bg, bgWidth, 0, width, bg.height,   0, 0, width, height);
+    ctx.drawImage(bg, shift, 0, width, bg.height,   0, 0, width, height);
 
     let c = alRunPoints[frameCurrent];
     if (dir === 'right') {
@@ -203,7 +231,8 @@ function draw() {
         ctx.drawImage(alRun, c.x, 0, c.w, player.height, -player.x - c.w, player.y, c.w,player.height );
         ctx.restore();
     }
-    // тест
+
+    ctx.fillText(`leftPos: ${leftPos}; rightPos: ${rightPos}; shift: ${Math.trunc(shift)}; px: ${player.x}; `, 200, 200)
 }
 
 
