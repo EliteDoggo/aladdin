@@ -52,7 +52,8 @@ html,body{
 }
 .pic-jasmine button:hover,.pic-aladdin button:hover{
     cursor: pointer;
-    background-color:purple;
+    background-color:green;
+    color: white;
 }
 .pics{
     display: flex;

@@ -34,9 +34,15 @@ height = canv.height = window.innerHeight;
 document.body.appendChild(canv);
 
 
+let frameCurrent = 0,
+    framePerStep = 5,
+    frames = 0,
+    dir = 'right',
+    ground = height * .98;
+
 let player = {
     x: 0,
-    y: height-50,
+    y: ground,
     width: 27,
     height: 62,
     speed: 3,
@@ -117,20 +123,27 @@ function update() {
     if (keys['ArrowRight']) {
         if (player.velX < player.speed) {
             player.velX++;
+            dir = 'right';
             
-        
-            if (aAA < 365) {
-                for (let i= 0; i < 12; i++){
-                    aAA = alRunPoints[i];
-                    
-                }
-            }else aAA = 0;
- 
+            if (frames >= framePerStep) {
+                frames = 0;
+                frameCurrent = (frameCurrent + 1) % alRunPoints.length;
+            } else {
+                frames++;
+            }
         }
     }
     if (keys['ArrowLeft']) {
         if (player.velX > -player.speed) {
             player.velX--;
+            dir = 'left';
+
+            if (frames >= framePerStep) {
+                frames = 0;
+                frameCurrent = (frameCurrent + 1) % alRunPoints.length;
+            } else {
+                frames++;
+            }
         }
     }
     
@@ -146,8 +159,8 @@ function update() {
         player.x= 0;
     }
 
-    if(player.y >= height - player.height-30){
-        player.y = height - player.height-30;
+    if(player.y >= ground - player.height-30){
+        player.y = ground - player.height-30;
         player.jumping = false;
     }
 
@@ -158,21 +171,38 @@ function update() {
     }
         
     
-    
 }
 let bgWidth = 0;
-let aAA= 0;
 
 let alRunPoints=[
-    3,35,68,93,127,166,203,234,262,291,325,365
+    {x: 3, w: 35},
+    {x: 35, w: 33},
+    {x: 68, w: 28},
+    {x: 93, w: 34},
+    {x: 127, w: 39},
+    {x: 166, w: 37},
+    {x: 203, w: 31},
+    {x: 234, w: 28},
+    {x: 262, w: 29},
+    {x: 291, w: 34},
+    {x: 325, w: 40},
+    {x: 365, w: 36}
 ];
+
+
 
 function draw() {
     ctx.drawImage(bg, bgWidth, 0, width, bg.height,   0, 0, width, height);
-      
-    // ctx.drawImage(alStand, player.x,  player.y, player.width, player.height);
-    // тест 
-    ctx.drawImage(alRun, aAA, 0,35,player.height, player.x, player.y,35,player.height );
+
+    let c = alRunPoints[frameCurrent];
+    if (dir === 'right') {
+        ctx.drawImage(alRun, c.x, 0, c.w, player.height, player.x, player.y, c.w,player.height );
+    } else if (dir === 'left') {
+        ctx.save();
+        ctx.scale(-1, 1);
+        ctx.drawImage(alRun, c.x, 0, c.w, player.height, -player.x - c.w, player.y, c.w,player.height );
+        ctx.restore();
+    }
     // тест
 }
 
