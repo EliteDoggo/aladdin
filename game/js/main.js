@@ -59,6 +59,7 @@ let snake = {
     width : 50,
     height : 50,
     speed : 3,
+    // bg.width : bg.width,
     // posx : 0,
     // posy : ground,
     // widthx : 50,
@@ -88,15 +89,14 @@ let alRunPoints=[
 
 //начало игры
 $forJa.onclick = function() {
-    $start.style.display ='none';
+    $start.style.display = 'none';
     $game.style.display = 'block';
-    if (bg.onload) {
+    if (images.onload) {
         init();
     }
-    
 };
 $forAl.onclick = function() {
-    $start.style.display ='none';
+    $start.style.display = 'none';
     $game.style.display = 'block';
     if (images.onload) {
         init();
@@ -134,8 +134,8 @@ snake.posx =  getRandomInt(width);
 
 
 
-let snakeOne = new Snake(images.snakeSprite, snake.x, snake.y, snake.width, snake.height, snake.speed);
-let snakeTwo = new Snake(images.snakeSprite, snake.x, snake.y, snake.width, snake.height, snake.speed);
+let snakeOne = new Snake(images.snakeSprite, snake.x, snake.y, snake.width, snake.height, snake.speed,snake.shift);
+let snakeTwo = new Snake(images.snakeSprite, snake.x, snake.y, snake.width, snake.height, snake.speed,snake.shift);
 
 snakeSpawning();
 function snakeSpawning() {
@@ -232,6 +232,7 @@ function update() {
         shift+=player.velX * 3;
         player.x = width/2;
     }
+   
 
     if (player.x >= width-alRunPoints[frameCurrent].w) {
         player.x = width - alRunPoints[frameCurrent].w;    
