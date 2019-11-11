@@ -27,17 +27,17 @@ let canv,
     friction = 0.8,
     gravity = 0.2;
 
+
 canv = document.createElement('canvas');
 ctx = canv.getContext('2d');
 width = canv.width = window.innerWidth;
 height = canv.height = window.innerHeight;
 document.body.appendChild(canv);
 
-
 let shift=0;
 
 let frameCurrent = 0,
-    framePerStep = 5,
+    framePerStep = 2,
     frames = 0,
     dir = 'right',
     ground = height * .98;
@@ -53,9 +53,39 @@ let player = {
     jumping:false
 };
 
-let banna = {
-
+let snake = {
+    x : 0,
+    y : ground,
+    width : 50,
+    height : 50,
+    speed : 3,
+    // posx : 0,
+    // posy : ground,
+    // widthx : 50,
+    // heighty : 50
 };
+
+ctx.font = '20px sans-serif';
+
+let leftPos,
+    rightPos;
+
+let alRunPoints=[
+    {x: 3, w: 33},
+    {x: 35, w: 33},
+    {x: 68, w: 27},
+    {x: 93, w: 34},
+    {x: 127, w: 39},
+    {x: 166, w: 37},
+    {x: 203, w: 31},
+    {x: 234, w: 28},
+    {x: 262, w: 29},
+    {x: 291, w: 34},
+    {x: 325, w: 40},
+    {x: 365, w: 36}
+];
+
+
 //начало игры
 $forJa.onclick = function() {
     $start.style.display ='none';
@@ -68,24 +98,51 @@ $forJa.onclick = function() {
 $forAl.onclick = function() {
     $start.style.display ='none';
     $game.style.display = 'block';
-    if (bg.onload) {
+    if (images.onload) {
         init();
     }
 };
+// END
 
-
+// ПИКЧИ ГРУЖУ 
 let bg = new Image();
 let alStand = new Image();
 let alRun = new Image();
+let snakeSprite = new Image();
 
-bg.onload = e=> {
+images.bg = bg;
+images.alStand = alStand;
+images.alRun = alRun;
+images.snakeSprite = snakeSprite;
+
+images.onload = e=> {
     return true;
 };
+// END
 
 bg.src = '../media/bg/bg.png';
 alStand.src = '../media/sprites/aladdin1.png';
 alRun.src = '../media/sprites/aladdinRun.png';
+snakeSprite.src = '../media/sprites/snake.png';
 
+
+
+function getRandomInt(value) {
+    return Math.floor(Math.random() * Math.floor(value));
+}
+snake.posx =  getRandomInt(width);
+
+
+
+let snakeOne = new Snake(images.snakeSprite, snake.x, snake.y, snake.width, snake.height, snake.speed);
+let snakeTwo = new Snake(images.snakeSprite, snake.x, snake.y, snake.width, snake.height, snake.speed);
+
+snakeSpawning();
+function snakeSpawning() {
+    snakeOne.snakeSpawn();
+    snakeTwo.snakeSpawn();
+    
+}
 
 function init() {
     name = $playerName.value;
@@ -93,7 +150,6 @@ function init() {
     bananas = 0;
     startTime = new Date().getTime();
     $tableName.innerHTML = name;
-
 
     updateTimer();
     interval = setInterval(() => {
@@ -114,6 +170,7 @@ function loop() {
     requestAnimationFrame(loop);
 }
 
+
 function update() {
     if (keys['ArrowUp']){
         if (!player.jumping) {
@@ -121,6 +178,7 @@ function update() {
             player.velY = -player.speed * 2;
         }
     }
+
     if (keys['ArrowRight']) {
         if (player.velX < player.speed) {
             player.velX++;
@@ -135,6 +193,7 @@ function update() {
             }
         }
     }
+
     if (keys['ArrowLeft']) {
         if (player.velX > -player.speed) {
             player.velX--;
@@ -160,18 +219,11 @@ function update() {
         player.jumping = false;
     }
 
-  
-    // if (player.x >= width/2 ) {
-    //     bgWidth+=player.speed;
-    //     player.x = width/2-1;
-    // }
-
 
     shift =Math.min(bg.width - width,Math.max(0,shift));
     leftPos = (shift == 0 && player.x<= width/2);
 
     rightPos = (shift == bg.width-width && player.x>=width/2);
-
 
 
     if (leftPos || rightPos) {
@@ -186,38 +238,10 @@ function update() {
     }else if (player.x <= 0) {
         player.x= 0;
     }
+    snakeOne.update();
+    snakeTwo.update();
 
-    // player.x = Math.min(width - alRunPoints[frameCurrent].w,Math.max(0,player.x));
 }
-
-
-ctx.font = '20px sans-serif';
-
-let leftPos,
-    rightPos;
-
-
-
-
-let bgWidth = 0;
-
-
-let alRunPoints=[
-    {x: 3, w: 35},
-    {x: 35, w: 33},
-    {x: 68, w: 28},
-    {x: 93, w: 34},
-    {x: 127, w: 39},
-    {x: 166, w: 37},
-    {x: 203, w: 31},
-    {x: 234, w: 28},
-    {x: 262, w: 29},
-    {x: 291, w: 34},
-    {x: 325, w: 40},
-    {x: 365, w: 36}
-];
-
-
 
 function draw() {
     ctx.drawImage(bg, shift, 0, width, bg.height,   0, 0, width, height);
@@ -228,12 +252,16 @@ function draw() {
     } else if (dir === 'left') {
         ctx.save();
         ctx.scale(-1, 1);
-        ctx.drawImage(alRun, c.x, 0, c.w, player.height, -player.x - c.w, player.y, c.w,player.height );
+        ctx.drawImage(alRun, c.x, 0, c.w, player.height, -player.x - c.w, player.y, c.w, player.height );
         ctx.restore();
     }
+    snakeOne.draw();
+    snakeTwo.draw();
 
-    ctx.fillText(`leftPos: ${leftPos}; rightPos: ${rightPos}; shift: ${Math.trunc(shift)}; px: ${player.x}; `, 200, 200)
+    ctx.fillText(`leftPos: ${leftPos}; rightPos: ${rightPos}; shift: ${Math.trunc(shift)}; px: ${player.x}; `, 200, 200);
 }
+
+
 
 
 function updateTimer() {
