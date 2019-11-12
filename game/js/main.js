@@ -25,7 +25,8 @@ let canv,
     height,
     keys = [],
     friction = 0.8,
-    gravity = 0.2;
+    gravity = 0.2,
+    snakes = [];
 
 
 canv = document.createElement('canvas');
@@ -118,14 +119,14 @@ images.snakeSprite = snakeSprite;
 images.onload = e=> {
     return true;
 };
-// END
+
 
 bg.src = '../media/bg/bg.png';
 alStand.src = '../media/sprites/aladdin1.png';
 alRun.src = '../media/sprites/aladdinRun.png';
 snakeSprite.src = '../media/sprites/snake.png';
 
-
+// END
 
 function getRandomInt(value) {
     return Math.floor(Math.random() * Math.floor(value));
@@ -134,14 +135,12 @@ snake.posx =  getRandomInt(width);
 
 
 
-let snakeOne = new Snake(images.snakeSprite, snake.x, snake.y, snake.width, snake.height, snake.speed,snake.shift);
-let snakeTwo = new Snake(images.snakeSprite, snake.x, snake.y, snake.width, snake.height, snake.speed,snake.shift);
 
-snakeSpawning();
+
 function snakeSpawning() {
-    snakeOne.snakeSpawn();
-    snakeTwo.snakeSpawn();
-    
+    for (let s of snakes) {
+        s.snakeSpawn();
+    }
 }
 
 function init() {
@@ -150,6 +149,14 @@ function init() {
     bananas = 0;
     startTime = new Date().getTime();
     $tableName.innerHTML = name;
+
+    snakes.push(new Snake(images.snakeSprite, snake.x, snake.y, snake.width, snake.height, snake.speed,snake.shift));
+    snakes.push(new Snake(images.snakeSprite, snake.x, snake.y, snake.width, snake.height, snake.speed,snake.shift));
+    snakes.push(new Snake(images.snakeSprite, snake.x, snake.y, snake.width, snake.height, snake.speed,snake.shift));
+    snakes.push(new Snake(images.snakeSprite, snake.x, snake.y, snake.width, snake.height, snake.speed,snake.shift));
+    snakes.push(new Snake(images.snakeSprite, snake.x, snake.y, snake.width, snake.height, snake.speed,snake.shift));
+    snakes.push(new Snake(images.snakeSprite, snake.x, snake.y, snake.width, snake.height, snake.speed,snake.shift));
+    snakeSpawning();
 
     updateTimer();
     interval = setInterval(() => {
@@ -211,7 +218,7 @@ function update() {
     player.velX *= friction;
     player.velY += gravity;
     
-    // player.x += player.velX;
+    
     player.y += player.velY;
 
     if(player.y >= ground - player.height-30){
@@ -239,9 +246,11 @@ function update() {
     }else if (player.x <= 0) {
         player.x= 0;
     }
-    snakeOne.update();
-    snakeTwo.update();
 
+
+    for (let s of snakes) {
+        s.update();
+    }
 }
 
 function draw() {
@@ -256,10 +265,14 @@ function draw() {
         ctx.drawImage(alRun, c.x, 0, c.w, player.height, -player.x - c.w, player.y, c.w, player.height );
         ctx.restore();
     }
-    snakeOne.draw();
-    snakeTwo.draw();
+
+
+    for (let s of snakes) {
+        s.draw();
+    }
 
     ctx.fillText(`leftPos: ${leftPos}; rightPos: ${rightPos}; shift: ${Math.trunc(shift)}; px: ${player.x}; `, 200, 200);
+
 }
 
 

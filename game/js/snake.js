@@ -9,44 +9,51 @@ class Snake {
         this.ground = window.innerHeight*0.98 - this.height - 40;
         this.movingDir = 'left';
         this.shift = shift;
+        this.maxLeftMove = 0;
+        this.maxRightMove = 0;
+        this.snakeSpawnXCoordinate  = 0
        
     }
-    snakePos(){
-        this.x = Math.floor(Math.random() * window.innerWidth);
-        // this.x = window.innerWidth-this.width;
+    snakePos(min=500, max=images.bg.width-500){
+        
+        this.x = Math.floor(Math.random() * (max - min) + min);
+        
 
     }
     snakeSpawn(){
         this.snakePos();
+        this.snakeSpawnXCoordinate = this.x;
+        this.maxLeftMove = this.snakeSpawnXCoordinate - 500;
+        this.maxRightMove = this.snakeSpawnXCoordinate + 500;
+
+
     }
     update() {
-        
+
+
         if (this.y >= this.ground ) { 
             this.y = this.ground;
             
         }
-
-        if (this.x <=0){
+        if (this.x <= this.maxLeftMove) {
             this.movingDir = 'right';
-            this.x += this.speed;
         }
-        if (this.x >= window.innerWidth - this.width ) {
+        if (this.x >= this.maxRightMove) {
             this.movingDir = 'left';
-            this.x-=this.speed;
         }
+
         if (this.movingDir === 'left'){
             this.x-=this.speed;
         }else if (this.movingDir = 'right') {
             this.x += this.speed;
-        }   
-        if (this.shift > 0 && this.movingDir==='left' ){
-            this.x -=shift;
         }
+
+
 
 
     }
     draw() {
-        ctx.drawImage(this.path, this.x, this.y, this.width, this.height );
+        ctx.drawImage(this.path, this.x - shift, this.y, this.width, this.height );
 
     }
     
