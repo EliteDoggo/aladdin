@@ -50,6 +50,28 @@ class Snake {
 
 
 
+        // // player
+        // let A = {
+        //     x: player.x;
+        //     y: player.y;
+        //     w: player.width;
+        //     h: player.height;
+        // };
+        // let B = {
+        //     x: this.x;
+        //     w: this.y;
+        //     h: this.width;
+        //     y: this.height;
+        // };
+
+        // if (
+        //     (B.x < A.x && A.x < B.x-B.width) &&
+        //     (B.x )&&
+        //     ()&&
+        //     ()&&
+        // )
+
+
 
     }
     draw() {
