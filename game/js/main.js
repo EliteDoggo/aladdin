@@ -26,7 +26,8 @@ let canv,
     keys = [],
     friction = 0.8,
     gravity = 0.2,
-    snakes = [];
+    snakes = [],
+    inSnake;
 
 
 canv = document.createElement('canvas');
@@ -158,6 +159,10 @@ function init() {
     snakes.push(new Snake(images.snakeSprite, snake.x, snake.y, snake.width, snake.height, snake.speed,snake.shift));
     snakeSpawning();
 
+
+    if (inSnake) {
+        hp-=30;
+    }
     updateTimer();
     interval = setInterval(() => {
         hp--;
@@ -272,7 +277,6 @@ function draw() {
     }
 
     ctx.fillText(`leftPos: ${leftPos}; rightPos: ${rightPos}; shift: ${Math.trunc(shift)}; px: ${player.x}; `, 200, 200);
-
 }
 
 
