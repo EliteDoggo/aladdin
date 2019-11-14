@@ -11,7 +11,9 @@ class Snake {
         this.shift = shift;
         this.maxLeftMove = 0;
         this.maxRightMove = 0;
-        this.snakeSpawnXCoordinate  = 0
+        this.snakeSpawnXCoordinate  = 0;
+        this.collided = false;
+        this.hit = false; // hit player in this second
     }
 
     snakePos(min=500, max=images.bg.width-500){
@@ -67,12 +69,21 @@ class Snake {
             (A.x + A.w >= B.x) &&
             (B.y + B.h >= A.y) &&
             (A.y + A.h >= B.y)    
-        ){ 
-    
+        ) {
+            if (!this.collided) {
+                this.collided = true;
+                this.hit = true;
+                hp -= 30;
+            }
+        } else {
+            this.collided = false;
         }
-
-
     }
+
+
+
+
+
 
 }
 
