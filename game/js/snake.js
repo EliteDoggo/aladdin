@@ -11,7 +11,7 @@ class Snake {
         this.shift = shift;
         this.maxLeftMove = 0;
         this.maxRightMove = 0;
-        this.snakeSpawnXCoordinate  = 0
+        this.snakeSpawnXCoordinate  = 0;
        
     }
     snakePos(min=500, max=images.bg.width-500){

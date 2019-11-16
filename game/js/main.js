@@ -60,11 +60,6 @@ let snake = {
     width : 50,
     height : 50,
     speed : 3,
-    // bg.width : bg.width,
-    // posx : 0,
-    // posy : ground,
-    // widthx : 50,
-    // heighty : 50
 };
 
 ctx.font = '20px sans-serif';
