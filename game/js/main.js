@@ -26,7 +26,9 @@ let canv,
     keys = [],
     friction = 0.8,
     gravity = 0.2,
-    snakes = [];
+    snakes = [],
+    inSnake;
+
 
 
 canv = document.createElement('canvas');
@@ -140,6 +142,7 @@ function snakeSpawning() {
 
 function init() {
     name = $playerName.value;
+    time = 0;
     hp = 100;
     bananas = 0;
     startTime = new Date().getTime();
@@ -154,15 +157,6 @@ function init() {
     snakeSpawning();
 
     updateTimer();
-    interval = setInterval(() => {
-        hp--;
-        updateTimer();
-        if (hp<=0) {
-            clearInterval(interval);
-            die();
-        }
-    },1000);
-
     loop();
 }
 
@@ -242,10 +236,34 @@ function update() {
         player.x= 0;
     }
 
-
     for (let s of snakes) {
         s.update();
     }
+
+    let t = new Date().getTime();
+    if (time <= t) {
+
+        for (let s of snakes) {
+            if (s.collided === true && s.hit !== true) {
+                hp -= 30;
+            } else {
+                s.hit = false;
+            }
+        }
+
+        hp--;
+
+        if (hp < 0) {
+            hp = 0;
+            die();
+        }
+
+        updateTimer();
+        time = t + 1000;
+    }
+
+
+
 }
 
 function draw() {
@@ -267,7 +285,6 @@ function draw() {
     }
 
     ctx.fillText(`leftPos: ${leftPos}; rightPos: ${rightPos}; shift: ${Math.trunc(shift)}; px: ${player.x}; `, 200, 200);
-
 }
 
 
