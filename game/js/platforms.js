@@ -1,10 +1,11 @@
 class Platform {
 	constructor() {
-		this.x = 300;
+		this.x = randFloat(500,bg.width-500);
 		this.y = ground - player.height*3 ;
 		this.width = 70;
 		this.height = 50;
 	}
+
 
 	update() {
 		this.checkCollide();
@@ -29,20 +30,31 @@ class Platform {
             w: this.width,
             h: this.height
         };
-		if (
-			(B.x + B.w >= A.x) &&
-			(A.x + A.w >= B.x) &&
-			(B.y + B.h >= A.y) &&
-			(A.y + A.h >= B.y)
+		if ((player.jumping || 
+			player.climbed) &&  
+			player.velY > 0 && 
+			A.y + A.h > B.y && 
+			A.x + A.w > B.x && 
+			A.x < B.x + B.w && 
+			A.y + A.h <= B.y + 25) {
 
-		) {
-			
-			if (player.y >= B.y - player.height+ 25 ) {
-				player.y = B.y - player.height+ 25 ;
-				player.jumping = false;
-			}
-			
+			player.climbed = true;
+			player.jumping = false;
+			player.y = this.y - player.height + 20;
+			player.velY = 0;
 		}
+		if ((player.jumping ) &&
+			player.velY<0 &&
+			A.x + A.w > B.x &&
+			A.x < B.x + B.w &&
+			A.y > B.y+B.h 
+
+			) {
+				player.y = B.y+B.h;
+			console.log(true);
+			player.velY *= 	-0.001;
+			player.jumping = true;
+ 		}
             
         
     }

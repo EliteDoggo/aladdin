@@ -27,7 +27,8 @@ let canv,
     friction = 0.8,
     gravity = 0.2,
     snakes = [],
-    inSnake;
+    inSnake,
+    platforms=[];
 
 
 
@@ -53,7 +54,9 @@ let player = {
     speed: 3,
     velX: 0,
     velY: 0,
-    jumping: false
+    jumping: false,
+    climbed:false,
+    under: false
 };
 
 let snake = {
@@ -175,11 +178,12 @@ function snakeSpawning() {
         s.snakeSpawn();
     }
 }
- let platfrom1 = new Platform();
+
+ 
 function init() {
     name = $playerName.value;
     time = 0;
-    hp = 100;
+    hp = 101110;
     bananas = 0;
     startTime = new Date().getTime();
     $tableName.innerHTML = name;
@@ -192,6 +196,10 @@ function init() {
     snakes.push(new Snake(images.snakeSprite, snake.x, snake.y, snake.width, snake.height, snake.speed, snake.shift));
     snakes.push(new Snake(images.snakeSprite, snake.x, snake.y, snake.width, snake.height, snake.speed, snake.shift));
     snakeSpawning();
+    platforms.push(new Platform());
+    platforms.push(new Platform());
+    platforms.push(new Platform());
+  
    
 
     updateTimer();
@@ -300,7 +308,10 @@ function update() {
         time = t + 1000;
     }
 
-    platfrom1.update();
+    for (let p of platforms) {
+        p.update();
+        
+    }
 
 
 }
@@ -322,7 +333,10 @@ function draw() {
     for (let s of snakes) {
         s.draw();
     }
-    platfrom1.draw();
+    for (let p of platforms) {
+        p.draw();
+        
+    }
     
 
     ctx.fillText(`leftPos: ${leftPos}; rightPos: ${rightPos}; shift: ${Math.trunc(shift)}; px: ${player.x}; `, 200, 200);
@@ -348,3 +362,11 @@ document.onkeydown = e => {
 document.onkeyup = e => {
     keys[e.key] = false;
 };
+
+function randInt(min=0, max=10) {
+	return Math.floor(Math.random() * (max - min) + min);
+}
+
+function randFloat(min=0, max=10) {
+	return Math.random() * (max - min) + min;
+}
