@@ -49,7 +49,7 @@ class Snake {
 
     draw() {
         ctx.drawImage(this.path, this.x - shift, this.y, this.width, this.height);
-      
+
     }
 
     checkCollide() {
@@ -80,7 +80,7 @@ class Snake {
             this.collided = false;
         }
     }
-    
+
 
 
 
