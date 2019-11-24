@@ -199,6 +199,11 @@ function init() {
     platforms.push(new Platform());
     platforms.push(new Platform());
     platforms.push(new Platform());
+    platforms.push(new Platform());
+    platforms.push(new Platform());
+    platforms.push(new Platform());
+    platforms.push(new Platform());
+    
 
 
 
@@ -234,6 +239,7 @@ function update() {
                 frames++;
             }
         }
+        
     }
 
     if (keys['ArrowLeft']) {
