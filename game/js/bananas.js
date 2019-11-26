@@ -1,11 +1,14 @@
 class Banana {
 	constructor() {
-		this.x = platforms[randInt(0, platforms.length - 1)].x + 15;
+		this.x = platforms[randInt(0, platforms.length - 1)].x;
 		this.y = 200;
 		this.w = 40;
 		this.h = 40;
 		this.colided = false;
+		this.toRemove= false;
 	}
+
+	
 	
 	update() {
 		this.checkCollide();
@@ -24,19 +27,20 @@ class Banana {
 		let B = {
 			x: this.x,
 			y: this.y,
-			w: this.width,
-			h: this.height
+			w: this.w,
+			h: this.h
 		};
 
 		if (
-            (A.x + A.w >= B.x) &&
             (B.x + B.w >= A.x) &&
-            (A.y + A.h >= B.y) &&
-            (B.y + B.h >= A.y)
+            (A.x + A.w >= B.x) &&
+            (B.y + B.h >= A.y) &&
+            (A.y + A.h >= B.y)
         ) {
 			if (!this.colided) {
+				this.toRemove = true;
 				this.colided = true;
-				hp += 5; 				
+				hp += 5;
 			}
 			else{
 				this.colided = false;

@@ -29,7 +29,8 @@ let canv,
     snakes = [],
     inSnake,
     platforms = [],
-    bananasArr=[];
+    bananasArr=[],
+    ind = 0;
 
 
 
@@ -177,11 +178,7 @@ banana.src = '../media/clipart/banana.png';
 
 
 
-function snakeSpawning() {
-    for (let s of snakes) {
-        s.snakeSpawn();
-    }
-}
+
 
 
 
@@ -189,7 +186,7 @@ function snakeSpawning() {
 function init() {
     name = $playerName.value;
     time = 0;
-    hp = 2222;
+    hp = 100;
     bananas = 0;
     startTime = new Date().getTime();
     $tableName.innerHTML = name;
@@ -210,13 +207,24 @@ function init() {
     platforms.push(new Platform());
     platforms.push(new Platform());
     
+    
         // let platformIndex = randInt(0, platforms.length - 1);
         bananasArr.push(new Banana());
         bananasArr.push(new Banana());
-    
-    
-    
 
+    
+    
+        function snakeSpawning() {
+            for (let s of snakes) {
+                s.snakeSpawn();
+            }
+        }
+        // function BananaSpawning() {
+        //     for (let b of bananasArr){
+        //         b.bananaSpawn();
+        //     }
+            
+        // }
 
 
     updateTimer();
@@ -333,6 +341,9 @@ function update() {
     }
     for (let b of bananasArr ){
         b.update();
+		if (b.toRemove === true){
+			bananasArr.splice(b,1);
+		}
     }
 
 
