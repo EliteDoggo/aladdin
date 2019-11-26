@@ -13,9 +13,6 @@ class Platform {
 	}
 	draw() {
 		ctx.drawImage(images.platform, this.x - shift, this.y, this.width, this.height);
-		ctx.strokeRect(this.x - shift, this.y, this.width, this.height);
-		
-
 	}
 	checkCollide() {
 		let A = {
@@ -44,6 +41,7 @@ class Platform {
 			player.y = this.y - player.height + 25;
 			player.velY = 0;
 		}
+		
 		// снизу
 		if ((player.jumping) &&
 			player.velY < 0 &&
@@ -59,9 +57,9 @@ class Platform {
 		// if (player.jumping &&
 		// 	B.y > A.y+A.h && 
 
-			
+
 		// 	// A.x+A.w <B.x
-			
+
 
 		// ) {
 		// 	console.log(true);

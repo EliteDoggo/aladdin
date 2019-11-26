@@ -28,7 +28,8 @@ let canv,
     gravity = 0.2,
     snakes = [],
     inSnake,
-    platforms = [];
+    platforms = [],
+    bananasArr=[];
 
 
 
@@ -146,6 +147,7 @@ let alStand = new Image();
 let alRun = new Image();
 let snakeSprite = new Image();
 let platform = new Image();
+let banana = new Image();
 
 
 images.bg = bg;
@@ -153,6 +155,7 @@ images.alStand = alStand;
 images.alRun = alRun;
 images.snakeSprite = snakeSprite;
 images.platform = platform;
+images.banana = banana;
 
 images.onload = e => {
     return true;
@@ -164,6 +167,7 @@ alStand.src = '../media/sprites/aladdin1.png';
 alRun.src = '../media/sprites/aladdinRun.png';
 snakeSprite.src = '../media/sprites/snake.png';
 platform.src = '../media/clipart/platform.png';
+banana.src = '../media/clipart/banana.png';
 
 // END
 
@@ -180,10 +184,12 @@ function snakeSpawning() {
 }
 
 
+
+
 function init() {
     name = $playerName.value;
     time = 0;
-    hp = 101110;
+    hp = 2222;
     bananas = 0;
     startTime = new Date().getTime();
     $tableName.innerHTML = name;
@@ -204,12 +210,19 @@ function init() {
     platforms.push(new Platform());
     platforms.push(new Platform());
     
+        // let platformIndex = randInt(0, platforms.length - 1);
+        bananasArr.push(new Banana());
+        bananasArr.push(new Banana());
+    
+    
+    
 
 
 
     updateTimer();
     loop();
 }
+
 
 function loop() {
     update();
@@ -318,6 +331,9 @@ function update() {
         p.update();
 
     }
+    for (let b of bananasArr ){
+        b.update();
+    }
 
 
 }
@@ -341,7 +357,9 @@ function draw() {
     }
     for (let p of platforms) {
         p.draw();
-
+    }
+    for (let b of bananasArr ){
+        b.draw();
     }
 
 
